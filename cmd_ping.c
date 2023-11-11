@@ -28,8 +28,9 @@
 
 #include "ping/ping_sock.h"
 
-#include "drv_console_if.h"
-
+#if CONFIG_DRV_CONSOLE_USE
+#include "drv_console.h"
+#endif
 
 /* *****************************************************************************
  * Configuration Definitions
@@ -126,7 +127,14 @@ static void cmd_ping_on_ping_end(esp_ping_handle_t hdl, void *args)
 
 static int do_ping_cmd(int argc, char **argv)
 {
+    #if CONFIG_DRV_CONSOLE_USE
+    #if CONFIG_DRV_CONSOLE_CUSTOM
+    #if CONFIG_DRV_CONSOLE_CUSTOM_LOG_DISABLE_FIX
     drv_console_set_log_disabled();
+    #endif
+    #endif
+    #endif
+
     
 
     esp_ping_config_t config = ESP_PING_DEFAULT_CONFIG();
@@ -165,7 +173,14 @@ static int do_ping_cmd(int argc, char **argv)
     if (ping_args.host->count == 0)
     {
         //ping without host is used from sockets after on no activity to and from proxy
+        #if CONFIG_DRV_CONSOLE_USE
+        #if CONFIG_DRV_CONSOLE_CUSTOM
+        #if CONFIG_DRV_CONSOLE_CUSTOM_LOG_DISABLE_FIX
         drv_console_set_log_enabled();
+        #endif
+        #endif
+        #endif
+        
         ESP_LOGI(TAG, "Ping on no activity from Proxy");
         return 0;
     }

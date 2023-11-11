@@ -1,3 +1,7 @@
 menu "Component drv_ping Configuration"
 
+    config DRV_PING_USE
+        bool "Use drv_ping component"
+        default y
+        
 endmenu
